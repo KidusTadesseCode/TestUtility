@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { FaCopy, FaTrash } from "react-icons/fa";
+import { IoCheckmark } from "react-icons/io5";
 
 export const Header = styled.div`
   color: #fff;
@@ -48,6 +50,34 @@ export const TextArea = styled.textarea`
     border: 2px solid #ff7eb3;
     background-color: rgba(30, 30, 30, 1);
   }
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  width: 100%;
+`;
+
+export const CopyIcon = styled(FaCopy)`
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  margin-left: 1rem;
+`;
+
+export const CheckIcon = styled(IoCheckmark)`
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  margin-left: 1rem;
+`;
+
+export const TrashIcon = styled(FaTrash)`
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  margin-left: 1rem;
 `;
 
 // In GlobalStyling.js

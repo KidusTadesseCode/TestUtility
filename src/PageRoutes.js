@@ -5,6 +5,7 @@ import RemoveCodeComments from "./component/RemoveCodeComments/RemoveCodeComment
 import Word from "./component/Word/Word";
 import WordCount from "./component/WordCount/WordCount";
 import ParseQuestion from "./component/ParseQuestion/ParseQuestion";
+import MulipleIntoSingleSchema from "./component/MulipleIntoSingleSchema/MulipleIntoSingleSchema";
 // *****  Documention  *****
 // private 1=private 0=public -1=private public
 // navigation: true= navigationName will displayed in the navigation bar and false= will not
@@ -129,6 +130,19 @@ const PageRoutes = [
     navigationName: "Test",
     element: <Test />,
     path: "/Test",
+    order: 5000,
+    private: -1,
+    navigation: true,
+    footer: false,
+    errorComponent: false,
+    displayRoutesOnThisPage: true,
+    colipaseNav: true,
+  },
+  {
+    id: "MulipleIntoSingleSchema",
+    navigationName: "Prisma Schema",
+    element: <MulipleIntoSingleSchema />,
+    path: "/mulipleIntoSingleSchema",
     order: 5000,
     private: -1,
     navigation: true,
