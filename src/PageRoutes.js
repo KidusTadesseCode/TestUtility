@@ -6,6 +6,7 @@ import Word from "./component/Word/Word";
 import WordCount from "./component/WordCount/WordCount";
 import ParseQuestion from "./component/ParseQuestion/ParseQuestion";
 import MulipleIntoSingleSchema from "./component/MulipleIntoSingleSchema/MulipleIntoSingleSchema";
+import ExportStyledComponents from "./component/ExportStyledComponents/ExportStyledComponents";
 // *****  Documention  *****
 // private 1=private 0=public -1=private public
 // navigation: true= navigationName will displayed in the navigation bar and false= will not
@@ -126,11 +127,11 @@ const PageRoutes = [
     colipaseNav: true,
   },
   {
-    id: "Test",
-    navigationName: "Test",
-    element: <Test />,
-    path: "/Test",
-    order: 5000,
+    id: "MulipleIntoSingleSchema",
+    navigationName: "Prisma Schema",
+    element: <MulipleIntoSingleSchema />,
+    path: "/mulipleIntoSingleSchema",
+    order: 7,
     private: -1,
     navigation: true,
     footer: false,
@@ -139,11 +140,24 @@ const PageRoutes = [
     colipaseNav: true,
   },
   {
-    id: "MulipleIntoSingleSchema",
-    navigationName: "Prisma Schema",
-    element: <MulipleIntoSingleSchema />,
-    path: "/mulipleIntoSingleSchema",
-    order: 5000,
+    id: "ExportStyledComponents",
+    navigationName: "Export Styled Components",
+    element: <ExportStyledComponents />,
+    path: "/exportStyledComponents",
+    order: 8,
+    private: -1,
+    navigation: true,
+    footer: false,
+    errorComponent: false,
+    displayRoutesOnThisPage: true,
+    colipaseNav: true,
+  },
+  {
+    id: "Test",
+    navigationName: "Test",
+    element: <Test />,
+    path: "/Test",
+    order: 5000, // Last
     private: -1,
     navigation: true,
     footer: false,
