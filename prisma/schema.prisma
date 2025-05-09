@@ -1,0 +1,111 @@
+datasource db {
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id             String          @id // Clerk User ID
+    email          String          @unique
+    githubAccounts GithubAccount[]
+    conversations  Conversation[] // NEW
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
+}
+
+model GithubAccount {
+    id             String    @id @default(uuid())
+    userId         String // Foreign key to your User model
+    user           User      @relation(fields: [userId], references: [id])
+    installationId String // Added: The GitHub App Installation ID
+    githubUserId   String?   @unique // GitHub's User ID (make optional if not always available)
+    githubUsername String? // GitHub username (make optional)
+    accessToken    String? // User OAuth access token (make optional)
+    refreshToken   String? // User OAuth refresh token (make optional)
+    expiresAt      DateTime? // User OAuth token expiry (make optional)
+
+    repositories Repository[]
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @updatedAt
+
+    // Added: Composite unique constraint for user + installation
+    @@unique([userId, installationId])
+    @@index([userId])
+}
+
+// --- NEW: Chat Models ---
+model Conversation {
+    id        String    @id @default(uuid())
+    userId    String // Link to the User
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    title     String? // Optional: Title for the conversation (e.g., first user message)
+    messages  Message[] // Relation to messages
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    modelName String // Store AI model
+
+    @@index([userId])
+}
+
+model Message {
+    id             String       @id @default(uuid())
+    createdAt      DateTime     @default(now())
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    sender         SenderType // "user" or "bot"
+    content        String       @db.Text // Use Text for potentially long messages
+    costTokens     Int? // Optional: Store token usage
+    costUSD        Float? // Optional: Store cost
+
+    @@index([conversationId])
+}
+
+// --- End Chat Models ---
+
+model Repository {
+    id              String        @id @default(uuid())
+    githubAccountId String
+    githubAccount   GithubAccount @relation(fields: [githubAccountId], references: [id], onDelete: Cascade)
+    githubRepoId    String // Added: GitHub's unique Repository ID
+    name            String
+    fullName        String // owner/name format (removed @unique)
+    private         Boolean
+    description     String?
+    defaultBranch   String
+    lastSyncedAt    DateTime?
+    webhookId       String? // Optional: If you manage webhooks per repo
+    webhookSecret   String? // Optional: Secret for repo webhooks
+
+    branches  Branch[] // Assuming you have a Branch model
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Added: Composite unique constraint for account + repo ID
+    @@unique([githubAccountId, githubRepoId])
+    @@index([githubAccountId])
+}
+
+model Branch {
+    id             String     @id @default(uuid())
+    repositoryId   String
+    repository     Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+    name           String
+    lastCommitSha  String?
+    lastCommitDate DateTime?
+    createdAt      DateTime   @default(now())
+    updatedAt      DateTime   @updatedAt
+
+    @@unique([repositoryId, name])
+    @@index([repositoryId])
+}
+
+enum SenderType {
+    user
+    bot
+}
+
+// npx prisma migrate dev --name "Foreign key to your User model"
