@@ -30,8 +30,10 @@ const ChatPage = () => {
   const [selectedModel, setSelectedModel] = useState(
     geminiModelsInfo("gemini-2.5-pro-preview-05-06")
   );
+
+  // Fetch conversations
   const fetchConversations = useCallback(async () => {
-    if (!userId) return;
+    if (!userId) return; // Don't fetch if not logged in
     setIsLoading(true);
     setError(null);
     try {
@@ -40,7 +42,7 @@ const ChatPage = () => {
     } catch (err) {
       console.error("Failed to fetch conversations:", err);
       setError("Could not load your conversations. Please try again.");
-      setConversations([]);
+      setConversations([]); // Clear conversations on error
     } finally {
       setIsLoading(false);
     }
@@ -50,6 +52,7 @@ const ChatPage = () => {
     if (isLoaded && userId) {
       fetchConversations();
     } else if (isLoaded && !userId) {
+      // Handle case where user is loaded but not logged in
       setIsLoading(false);
       setConversations([]);
     }
@@ -59,11 +62,9 @@ const ChatPage = () => {
     setIsCreating(true);
     setError(null);
     try {
-      console.log(1, "handleStartNewChat() selectedModel:", selectedModel);
       const response = await axios.post("/api/chat/conversations", {
         modelName: selectedModel.name.replace("models/", ""),
       });
-      console.log(2, "handleStartNewChat() selectedModel:", selectedModel);
       const { conversationId } = response.data;
       if (conversationId) {
         router.push(`/chat/${conversationId}`);
@@ -96,7 +97,6 @@ const ChatPage = () => {
   };
 
   const handleSaveSettings = (model) => {
-    console.log("handleSaveSettings() model:", model);
     setSelectedModel(model);
     return;
   };

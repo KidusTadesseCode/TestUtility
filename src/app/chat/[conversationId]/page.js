@@ -17,25 +17,9 @@ import {
 } from "./style";
 import { v4 as uuidv4 } from "uuid";
 import { geminiModelsInfo } from "@/libs/gemini/geminiModelsInfo";
-
+import KeyFinder from "@/libs/traversal/findKeyDFS";
 // "gemini-2.5-pro-exp-03-25";
-const defaultModel = {
-  name: "models/gemini-2.5-pro-preview-05-06",
-  version: "2.5-preview-05-06",
-  displayName: "Gemini 2.5 Pro Preview 05-06",
-  description: "Preview release (May 6th, 2025) of Gemini 2.5 Pro",
-  inputTokenLimit: 1048576,
-  outputTokenLimit: 65536,
-  supportedGenerationMethods: [
-    "generateContent",
-    "countTokens",
-    "createCachedContent",
-  ],
-  temperature: 1,
-  topP: 0.95,
-  topK: 64,
-  maxTemperature: 2,
-};
+
 const ConversationChatPage = () => {
   const { userId, isLoaded } = useAuth();
   const params = useParams();
@@ -47,7 +31,6 @@ const ConversationChatPage = () => {
   const [selectedModel, setSelectedModel] = useState({});
   const [conversationTitle, setConversationTitle] =
     useState("Loading title...");
-  const [count, setCount] = useState(0);
 
   const saveMessageToDatabase = async (message) => {
     if (!conversationId || !userId) return;
@@ -88,16 +71,20 @@ const ConversationChatPage = () => {
         `/api/chat/conversations/${conversationId}`
       );
       const conversationData = response.data;
-      console.log("conversationData:", conversationData.modelName);
-      // await geminiModelsInfo(conversationData.modelName);
-      // const modelInfo = await geminiModelsInfo(
-      //   `models/${conversationData.modelName}`
-      // );
-      // console.log("modelInfo:", modelInfo.displayName);
-      setSelectedModel(geminiModelsInfo(modelInfo.displayName));
-      // setSelectedModel(modelInfo);
-      // setSelectedModel(conversationData.modelName);
+      const modelInfo = geminiModelsInfo(conversationData.modelName);
+      if (!modelInfo || Object.keys(modelInfo).length === 0 || !modelInfo.name)
+        return setError("AI model not found.");
+      setSelectedModel(modelInfo);
       setConversationTitle(conversationData.title || "Untitled Chat");
+      console.log(conversationData);
+      const keyFinder = new KeyFinder(conversationData);
+      const info = {
+        id: keyFinder.findKeyDFS("id"),
+        text: keyFinder.findKeyDFS("text"),
+        sender: keyFinder.findKeyDFS("sender"),
+        createdAt: keyFinder.findKeyDFS("createdAt"),
+      };
+      console.log(info);
       const formattedMessages = (conversationData.messages || []).map(
         (msg) => ({
           id: msg.id,
@@ -114,6 +101,7 @@ const ConversationChatPage = () => {
         setInitialMessages(formattedMessages);
       }
     } catch (err) {
+      setIsLoading(false);
       console.error("Failed to fetch conversation data:", err);
       if (err.response?.status === 404 || err.response?.status === 403) {
         setError("Conversation not found or access denied.");
@@ -155,7 +143,7 @@ const ConversationChatPage = () => {
           title: newTitle,
         }
       );
-      console.log("response:", response);
+      console.error("response:", response);
     } catch (err) {
       console.error("Failed to update title:", err);
       setError("Failed to update conversation title.");
@@ -163,7 +151,7 @@ const ConversationChatPage = () => {
     }
   };
 
-  if (!isLoaded || isLoading) {
+  if (!isLoaded || (isLoading && !error)) {
     return (
       <PageContainer>
         <LoadingContainer>

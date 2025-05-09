@@ -25,7 +25,6 @@ import {
   TokenInfo, // Keep TokenInfo style if other parts might use it, otherwise remove
 } from "./styles";
 import { useChat } from "@ai-sdk/react";
-
 const AIChatbotStream = ({
   aiModel,
   onReceiveMessage,
@@ -33,7 +32,7 @@ const AIChatbotStream = ({
   initialMessages = [],
   conversationId,
 }) => {
-  // const [isTyping, setIsTyping] = useState(false);
+  // const [isTyping, setIsTyping] = useState(false); // Keep this as a comment
   const [error, setError] = useState(null);
   const chatEndRef = useRef(null);
   const { messages, input, handleSubmit, handleInputChange, status } = useChat({
@@ -41,8 +40,8 @@ const AIChatbotStream = ({
     id: conversationId,
     body: {
       conversationId,
-      // systemInstruction: systemInstruction,
-      modelName: aiModel.name.replace("models/", ""),
+      // systemInstruction: systemInstruction, // Keep this as a comment
+      modelName: aiModel.name,
     },
     initialMessages: initialMessages,
     onResponse: (response) => {
@@ -97,7 +96,7 @@ const AIChatbotStream = ({
         <Avatar $sender="bot">
           <BiBot size={20} />
         </Avatar>
-        {aiModel && <h2>{aiModel}</h2>}
+        {aiModel && <h2>{aiModel.displayName}</h2>}
       </ChatHeader>
 
       <ChatScrollContainer>
@@ -204,6 +203,4 @@ const AIChatbotStream = ({
     </ChatContainer>
   );
 };
-
-// Renamed export
 export default AIChatbotStream;
