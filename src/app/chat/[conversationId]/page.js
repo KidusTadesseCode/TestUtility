@@ -6,7 +6,7 @@ import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import AIChatbotStream from "@/component/AIChatbot/AIChatbotStream";
 import { BiArrowBack, BiLoaderAlt } from "react-icons/bi";
-import EditableConversationTitle from "@/component/EditableConversationTitle/EditableConversationTitle";
+import EditableConversationTitle from "@/component/AIChatbot/EditableConversationTitle";
 import {
   PageContainer,
   ChatHeaderContainer,

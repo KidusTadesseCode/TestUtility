@@ -14,7 +14,7 @@ import {
   BiChevronDown,
 } from "react-icons/bi";
 import { useRouter } from "next/navigation";
-import RepoSelectionModal from "@/components/GitHub/RepoSelectionModal";
+import RepoSelectionModal from "@/component/GitHub/RepoSelectionModal";
 import {
   PageContainer,
   Header,
