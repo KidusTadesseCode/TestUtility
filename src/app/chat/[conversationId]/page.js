@@ -17,7 +17,6 @@ import {
 } from "./style";
 import { v4 as uuidv4 } from "uuid";
 import { geminiModelsInfo } from "@/libs/gemini/geminiModelsInfo";
-import KeyFinder from "@/libs/traversal/findKeyDFS";
 // "gemini-2.5-pro-exp-03-25";
 
 const ConversationChatPage = () => {
@@ -76,15 +75,6 @@ const ConversationChatPage = () => {
         return setError("AI model not found.");
       setSelectedModel(modelInfo);
       setConversationTitle(conversationData.title || "Untitled Chat");
-      console.log(conversationData);
-      const keyFinder = new KeyFinder(conversationData);
-      const info = {
-        id: keyFinder.findKeyDFS("id"),
-        text: keyFinder.findKeyDFS("text"),
-        sender: keyFinder.findKeyDFS("sender"),
-        createdAt: keyFinder.findKeyDFS("createdAt"),
-      };
-      console.log(info);
       const formattedMessages = (conversationData.messages || []).map(
         (msg) => ({
           id: msg.id,
