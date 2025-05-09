@@ -30,10 +30,8 @@ const ChatPage = () => {
   const [selectedModel, setSelectedModel] = useState(
     geminiModelsInfo("gemini-2.5-pro-preview-05-06")
   );
-
-  // Fetch conversations
   const fetchConversations = useCallback(async () => {
-    if (!userId) return; // Don't fetch if not logged in
+    if (!userId) return;
     setIsLoading(true);
     setError(null);
     try {
@@ -42,7 +40,7 @@ const ChatPage = () => {
     } catch (err) {
       console.error("Failed to fetch conversations:", err);
       setError("Could not load your conversations. Please try again.");
-      setConversations([]); // Clear conversations on error
+      setConversations([]);
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +50,6 @@ const ChatPage = () => {
     if (isLoaded && userId) {
       fetchConversations();
     } else if (isLoaded && !userId) {
-      // Handle case where user is loaded but not logged in
       setIsLoading(false);
       setConversations([]);
     }
