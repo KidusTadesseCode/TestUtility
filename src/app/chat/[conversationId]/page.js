@@ -16,7 +16,7 @@ import {
   ChatArea,
 } from "./style";
 import { v4 as uuidv4 } from "uuid";
-import { geminiModelsInfo } from "@/libs/gemini/listAvailableGeminiModels";
+import { geminiModelsInfo } from "@/libs/gemini/geminiModelsInfo";
 
 // "gemini-2.5-pro-exp-03-25";
 const defaultModel = {

@@ -1,13 +1,5 @@
 // src/libs/gemini/listAvailableGeminiModels.js
 import geminiModel from "@/data/geminiModels";
-
-// Do not remove the listAvailableGeminiModels function
-export default function listAvailableGeminiModels() {
-  return geminiModel;
-}
-
-// https://generativelanguage.googleapis.com/v1beta/models/chat-bison-001?key=${apiKey}
-
 /**
  * Retrieves information about a Gemini model based on its name.
  * The input can be either the full model name (e.g., "models/chat-bison-001")

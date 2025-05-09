@@ -17,7 +17,7 @@ import {
   ActionButton,
   LoadingText,
 } from "./style";
-import { geminiModelsInfo } from "@/libs/gemini/listAvailableGeminiModels";
+import { geminiModelsInfo } from "@/libs/gemini/geminiModelsInfo";
 
 const ChatPage = () => {
   const { userId, isLoaded } = useAuth();
