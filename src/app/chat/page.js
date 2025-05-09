@@ -5,7 +5,7 @@ import { BiCog, BiPlusCircle } from "react-icons/bi";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import ConversationList from "@/component/ConversationList/ConversationList";
+import ConversationList from "@/component/AIChatbot/ConversationList";
 import GeminiSettings from "@/component/AIChatbot/GeminiSettings";
 import {
   PageContainer,
