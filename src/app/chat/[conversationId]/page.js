@@ -136,10 +136,6 @@ const ConversationChatPage = () => {
     }
   }, [isLoaded, userId, conversationId, fetchConversationData, router]);
 
-  useEffect(() => {
-    console.log(count, "selectedModel:", selectedModel);
-    setCount(count + 1);
-  }, [selectedModel]);
   const handleUpdateTitle = async (newTitle) => {
     if (
       !conversationId ||
